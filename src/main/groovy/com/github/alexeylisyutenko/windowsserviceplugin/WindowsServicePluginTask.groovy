@@ -48,7 +48,7 @@ class WindowsServicePluginTask extends DefaultTask {
     }
 
     WindowsServicePluginTask() {
-        this.configuration = project.getConvention().getByType(WindowsServicePluginConfiguration.class)
+        this.configuration = project.getExtensions().getByType(WindowsServicePluginConfiguration.class)
 
         // Apply Java gradle plugin.
         project.pluginManager.apply(JavaPlugin.class)
@@ -57,9 +57,9 @@ class WindowsServicePluginTask extends DefaultTask {
         dependsOn.add(project.tasks[JavaPlugin.JAR_TASK_NAME])
 
         // Populate classpath with jar task outputs and runtime dependencies.
-        project.afterEvaluate {
+         project.afterEvaluate {
             automaticClasspath = automaticClasspath + project.files(project.tasks[JavaPlugin.JAR_TASK_NAME])
-            automaticClasspath = automaticClasspath + project.configurations[JavaPlugin.RUNTIME_CONFIGURATION_NAME]
+            automaticClasspath = automaticClasspath + project.configurations.getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
         }
     }
 
